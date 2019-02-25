@@ -1,12 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-struct Edge{//边的类
-    int v,length;
-};
 int N,M,K,Ds,station=-1;//station表示符合要求的加油站编号
 double minDis=-1,avgDis=1e9;//到最近的住宅区距离、到所有住宅区的平均距离
-vector<Edge>graph[1015];//图
-int dis[1015];//到住宅区和加油站的最短距离
+int graph[1015][1015],dis[1015];//图、到住宅区和加油站的最短距离
 bool visit[1015];//是否已访问过
 int trans(const string&s){//将加油站的“Gi”形式的编号转换成N+i，住宅区的编号不变
     if(s[0]=='G')
@@ -25,9 +21,9 @@ void Dijkstra(){
         if(v==-1)//如果图不连通，直接返回
             return;
         visit[v]=true;//当前编号已访问
-        for(Edge&e:graph[v])//更新能到达的编号的最短距离
-            if(!visit[e.v]&&dis[e.v]>dis[v]+e.length)
-                dis[e.v]=dis[v]+e.length;
+        for(int i=1;i<M+N+1;++i)//更新能到达的编号的最短距离
+            if(!visit[i]&&graph[v][i]!=0&&dis[i]>dis[v]+graph[v][i])
+                dis[i]=dis[v]+graph[v][i];
     }
 }
 int main(){
@@ -37,8 +33,7 @@ int main(){
         int k1;
         cin>>s1>>s2>>k1;
         int k2=trans(s1),k3=trans(s2);
-        graph[k2].push_back({k3,k1});
-        graph[k3].push_back({k2,k1});
+        graph[k2][k3]=graph[k3][k2]=k1;
     }
     for(int i=N+1;i<=N+M;++i){//对M个加油站使用M次Dijkstra算法
         fill(dis,dis+N+M+1,INT_MAX);
@@ -55,7 +50,7 @@ int main(){
             else if(dis[j]>Ds)
                 flag=false;
         currentAvgDis/=N;
-        if(flag&&(currentMindis>minDis||(currentMindis==minDis&¤tAvgDis<avgDis))){
+        if(flag&&(currentMindis>minDis||(currentMindis==minDis&&currentAvgDis<avgDis))){
             station=i;
             minDis=currentMindis;
             avgDis=currentAvgDis;
