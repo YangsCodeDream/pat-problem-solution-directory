@@ -1,50 +1,62 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-const int INF=1e4+5;
-int pre[INF],in[INF],father[INF],depth[INF];
-void createTree(int root,int left,int right,int Depth,int Father){
+struct Node{//结点类
+    int data,father,level;//权值、父节点在pre中的下标、深度
+    Node(int d=0,int f=-1,int l=0):data(d),father(f),level(l){}
+};
+const int MAX=10005;
+Node pre[MAX];
+int n,m,in[MAX];
+void createTree(int root,int left,int right,int father,int level){//确定每个结点的父节点和深度
     if(left>right)
         return;
-    int i=0;
-    while(in[i]!=pre[root])
+    int i=left;
+    while(i<=right&&in[i]!=pre[root].data)
         ++i;
-    father[i]=Father;
-    depth[i]=Depth;
-    createTree(root+1,left,i-1,Depth+1,i);
-    createTree(root+1+i-left,i+1,right,Depth+1,i);
+    pre[root]=Node(pre[root].data,father,level);//确定当前子树根结点的父节点和深度
+    createTree(root+1,left,i-1,root,level+1);//递归处理左子树
+    createTree(root+1+i-left,i+1,right,root,level+1);//递归处理右子树
 }
 int main(){
-    int M,N;
-    scanf("%d%d",&M,&N);
-    for(int i=0;i<N;++i){
-        scanf("%d",&pre[i]);
-        in[i]=pre[i];
+    scanf("%d%d",&m,&n);
+    for(int i=0;i<n;++i){
+        scanf("%d",&pre[i].data);
+        in[i]=pre[i].data;
     }
-    sort(in,in+N);
-    createTree(0,0,N-1,1,INT_MAX);
-    while(M--){
+    sort(in,in+n);//中序遍历序列
+    createTree(0,0,n-1,-1,0);
+    for(int i=0;i<m;++i){
         int a,b;
         scanf("%d%d",&a,&b);
-        int f1=lower_bound(in,in+N,a)-in,f2=lower_bound(in,in+N,b)-in;
-        if((f1==N||in[f1]!=a)&&(f2==N||in[f2]!=b))
+        int ia=n,ib=n;
+        for(int i=0;i<n;++i){//找到两个结点在pre数组中的下标
+            if(pre[i].data==a)
+                ia=i;
+            if(pre[i].data==b)
+                ib=i;
+        }
+        if(ia==n&&ib==n){
             printf("ERROR: %d and %d are not found.\n",a,b);
-        else if(f1==N||in[f1]!=a)
+        }else if(ia==n){
             printf("ERROR: %d is not found.\n",a);
-        else if(f2==N||in[f2]!=b)
+        }else if(ib==n){
             printf("ERROR: %d is not found.\n",b);
-        else{
-            if(depth[f1]<depth[f2])
-                swap(f1,f2);
-            while(depth[f1]!=depth[f2])
-                f1=father[f1];
-            if(in[f1]==in[f2])
-                printf("%d is an ancestor of %d.\n",in[f2],in[f2]==a?b:a);
-            else{
-                while(in[f1]!=in[f2]){
-                    f1=father[f1];
-                    f2=father[f2];
+        }else{
+            bool f=true;//true表示a的深度更大
+            if(pre[ia].level<pre[ib].level){//让ia指向深度更大的结点
+                swap(ia,ib);
+                f=false;
+            }
+            while(pre[ia].level>pre[ib].level)//将二者调整到同一深度
+                ia=pre[ia].father;
+            if(ia==ib){
+                printf("%d is an ancestor of %d.\n",pre[ia].data,f?a:b);
+            }else{
+                while(ia!=ib){//ia,ib同时向上调整，直至二者指向同一结点
+                    ia=pre[ia].father;
+                    ib=pre[ib].father;
                 }
-                printf("LCA of %d and %d is %d.\n",a,b,in[f1]);
+                printf("LCA of %d and %d is %d.\n",a,b,pre[ia].data);
             }
         }
     }
