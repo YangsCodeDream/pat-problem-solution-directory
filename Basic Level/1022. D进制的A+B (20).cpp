@@ -6,13 +6,12 @@ int main(){
     A+=B;
     if(A==0)
         printf("0");
-    char result[32];
-    int i=0;
+    string result="";
     while(A!=0){
-        result[i++]=(char)(A%D)+'0';
+        result+=A%D+'0';
         A/=D;
     }
-    while(i>0)
-        printf("%c",result[--i]);
+    reverse(result.begin(),result.end());
+    printf("%s",result.c_str());
     return 0;
 }
