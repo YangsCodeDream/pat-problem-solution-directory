@@ -2,14 +2,13 @@
 using namespace std;
 int main(){
     int N;
-    scanf("%d",&N);
-    getchar();
+    scanf("%d%*c",&N);
     while(N--){
         bool digit=false,letter=false,legal=true;
         string str;
         getline(cin,str);
         if(str.size()<6){
-            cout<<"Your password is tai duan le."<<endl;
+            puts("Your password is tai duan le.");
             continue;
         }
         for(int i=0;i<str.size()&&legal;++i)
@@ -20,13 +19,13 @@ int main(){
             else if(isdigit(str[i]))
                 digit=true;
         if(!legal)
-            cout<<"Your password is tai luan le."<<endl;
+            puts("Your password is tai luan le.");
         else if(letter&&digit)
-            cout<<"Your password is wan mei."<<endl;
+            puts("Your password is wan mei.");
         else if(!digit)
-            cout<<"Your password needs shu zi."<<endl;
+            puts("Your password needs shu zi.");
         else if(!letter)
-            cout<<"Your password needs zi mu."<<endl;
+            puts("Your password needs zi mu.");
     }
     return 0;
 }
