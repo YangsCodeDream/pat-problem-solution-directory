@@ -1,18 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
 int main(){
-    char input[1005]={0};
+    string input="";
     int hashTable[128]={0};
-    gets(input);
-    for(int i=0;input[i]!='\0';++i)
-        if(isalpha(input[i])){
-            char c=tolower(input[i]);//按小写字母储存
-            ++hashTable[c];
-        }
-    int maxIndex=0;
-    for(int i=1;i<128;++i)
-        if(hashTable[i]>hashTable[maxIndex])
-            maxIndex=i;
+    getline(cin,input);
+    for(char a:input)
+        if(isalpha(a))
+            ++hashTable[tolower(a)];
+    int maxIndex=max_element(hashTable,hashTable+128)-hashTable;
     printf("%c %d",maxIndex,hashTable[maxIndex]);
     return 0;
 }
