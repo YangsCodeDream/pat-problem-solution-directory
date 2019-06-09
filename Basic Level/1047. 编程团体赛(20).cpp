@@ -9,10 +9,7 @@ int main(){
         scanf("%d-%d %d",&a,&b,&c);
         teamScore[a]+=c;
     }
-    int maxIndex=0;
-    for(int i=1;i<1005;++i)
-        if(teamScore[i]>teamScore[maxIndex])
-            maxIndex=i;
+    int maxIndex=max_element(teamScore,teamScore+1005)-teamScore;
     printf("%d %d",maxIndex,teamScore[maxIndex]);
     return 0;
 }
