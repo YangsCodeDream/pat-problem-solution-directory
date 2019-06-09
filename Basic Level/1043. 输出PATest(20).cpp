@@ -1,12 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 int main(){
-    char input[10005];
-    gets(input);
-    char s[7]="PATest";//将数组下标映射到PATest这6个字符
+    string input="",s="PATest";//s负责将数组下标映射到PATest这6个字符
+    getline(cin,input);
     unordered_map<char,int>m;//记录字符及其出现次数
-    for(int i=0;input[i]!='\0';++i)//统计字符出现的次数
-        ++m[input[i]];
+    for(char c:input)//统计字符出现的次数
+        ++m[c];
     bool f=true;//跳出循环的标志
     while(f){//不断遍历输出
         f=false;
