@@ -11,12 +11,10 @@ int main(){
         double k=0.0;
         sscanf(s,"%lf",&k);//将这一字符串输出为一个浮点数
         sprintf(ss,"%.2f",k);//将这一浮点数输出为一个有两位小数的字符串
-        //判断两个字符串是否一致
-        bool flag=true;
+        bool flag=true;//判断两个字符串是否一致
         for(int i=0;s[i]!='\0'&&flag;++i)
             if(s[i]!=ss[i])
                 flag=false;
-        //判断是否是合法输入
         if(!flag||k>1000||k<-1000){//不是输出指定字符串
             printf("ERROR: %s is not a legal number\n",s);
         }else{//是合法输入进行累加
@@ -24,9 +22,8 @@ int main(){
             sum+=k;
         }
     }
-    //输出
     if(num==0)
-        printf("The average of 0 numbers is Undefined\n");
+        printf("The average of 0 numbers is Undefined");
     else if(num==1)
         printf("The average of 1 number is %.2f",sum);
     else
