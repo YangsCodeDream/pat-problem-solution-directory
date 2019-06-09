@@ -1,17 +1,14 @@
 #include<bits/stdc++.h>
 using namespace std;
 struct Problem{
-    int score=0;//该题分数
-    int num=0;//选项个数
+    int score=0,num=0,wrongNum=0;//该题分数、选项个数、错误次数
     string answer="";//正确答案
-    int wrongNum=0;//错误次数
 };
 int main(){
-    int N,M;
+    int N,M,n;
     scanf("%d%d",&N,&M);
     Problem p[M];
     for(int i=0;i<M;++i){//读取题目数据
-        int n;
         scanf("%d%d%d",&p[i].score,&p[i].num,&n);
         while(n--){
             char c;
@@ -22,7 +19,6 @@ int main(){
     for(int i=0;i<N;++i){//读取学生选项
         int score=0;
         for(int j=0;j<M;++j){
-            int n;
             while(getchar()!='(');//读取字符直至遇到(字符
             scanf("%d",&n);
             string s="";
