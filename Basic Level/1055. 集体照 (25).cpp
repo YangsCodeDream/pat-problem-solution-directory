@@ -1,15 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 struct Person{
-    char name[10];//名字
+    string name;//名字
     int height;//身高
 };
-bool cmp(const Person&p1,const Person&p2){//比较函数
-    if(p1.height!=p2.height)
-        return p1.height>p2.height;//身高高的排在前面
-    else
-        return strcmp(p1.name,p2.name)<0;//字典序小的排在前面
-}
 Person person[10005];//存储数据的数组
 void output(int left,int right){//输出某一排名字的函数,输出范围为person数组中的[left,right)区间
     vector<int>v(right-left);//按排队规则存储person数组相应下标
@@ -22,15 +16,17 @@ void output(int left,int right){//输出某一排名字的函数,输出范围为
             v[mid+k/2]=i;
     }
     for(int i=0;i<v.size();++i)//输出
-        printf("%s%s",i>0?" ":"",person[v[i]].name);
-    printf("\n");
+        printf("%s%s",i>0?" ":"",person[v[i]].name.c_str());
+    puts("");
 }
 int main(){
     int N,K;
     scanf("%d%d",&N,&K);
     for(int i=0;i<N;++i)
-        scanf("\n%s %d",person[i].name,&person[i].height);
-    sort(person,person+N,cmp);//排序
+        cin>>person[i].name>>person[i].height;
+    sort(person,person+N,[](const Person&p1,const Person&p2){//比较函数
+        return p1.height!=p2.height?p1.height>p2.height:p1.name<p2.name;
+    });//排序
     for(int i=0;i<N;i+=N/K)//按排输出
         if(i==0){
             output(i,i+N%K+N/K);
