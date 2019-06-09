@@ -6,8 +6,7 @@ int main(){
     while(N--){
         char c1,c2;
         for(int i=0;i<4;++i){
-            getchar();
-            scanf("%c-%c",&c1,&c2);
+            scanf("%*c%c-%c",&c1,&c2);
             if(c2=='T')
                 printf("%d",(int)(c1-'A'+1));
         }
