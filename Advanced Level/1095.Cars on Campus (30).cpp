@@ -1,11 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 struct Record{
-    char plateNum[8];//车名
+    string plateNum;//车名
     int time=0;//时间
     bool in=false;//停入还是开出
-    Record(char*s,int t,bool i):time(t),in(i){//构造函数
-        strcpy(plateNum,s);
+    Record(const string&s,int t,bool i):time(t),in(i){//构造函数
+        plateNum=s;
     }
 };
 bool cmp(const Record&r1,const Record&r2){//比较函数
@@ -17,9 +17,11 @@ int main(){
     unordered_map<string,vector<Record>>allCar;//存储车名与其对应的所有记录信息
     int h,m,s;
     while(N--){//读取数据
-        char in[4],plate[8];
-        scanf("\n%s %d:%d:%d %s",plate,&h,&m,&s,in);
-        allCar[string(plate)].push_back(Record(plate,h*3600+m*60+s,strcmp(in,"in")==0));
+        string in,plate;
+        cin>>plate;
+        scanf("%d:%d:%d",&h,&m,&s);
+        cin>>in;
+        allCar[string(plate)].push_back(Record(plate,h*3600+m*60+s,in=="in"));
     }
     vector<Record>validCar;//存储合法的记录信息
     set<string>maxPlate;//存储停放时间最长的车名，set可直接按字典序排序
