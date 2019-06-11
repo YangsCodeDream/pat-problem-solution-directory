@@ -5,14 +5,10 @@ struct Testee{//考生类
     int score,localNumber,rank[2]={1,1};//考场排名、总排名
 };
 vector<Testee>testee;//存储考生的vector
-bool cmp(const Testee&t1,const Testee&t2){//比较函数，先按成绩由大到小排序，成绩相同的按准考证号有小到大排序
-    if(t1.score!=t2.score)
-        return t1.score>t2.score;
-    else
-        return t1.id<t2.id;
-}
 void setRank(int index,int _begin,int _end){//计算排名,index为0、1分别代表计算考场内排名、总排名
-    sort(testee.begin()+_begin,testee.begin()+_end,cmp);//排序
+    sort(testee.begin()+_begin,testee.begin()+_end,[](const Testee&t1,const Testee&t2){//比较函数，先按成绩由大到小排序，成绩相同的按准考证号有小到大排序
+        return (t1.score!=t2.score)?t1.score>t2.score:t1.id<t2.id;
+    });//排序
     for(int j=_begin+1;j<testee.size();++j)//计算排名
         if(testee[j].score==testee[j-1].score)
             testee[j].rank[index]=testee[j-1].rank[index];
